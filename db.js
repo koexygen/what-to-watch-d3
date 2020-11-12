@@ -2,7 +2,7 @@ const input = document.getElementById("movie-name");
 const form = document.querySelector("form");
 let movieImgPath = "https://image.tmdb.org/t/p/w500/";
 
-const dims = { width: 1080, height: 500 };
+const dims = { width: window.innerWidth, height: 500 };
 
 const svg = d3
   .select(".canvas")
@@ -13,7 +13,7 @@ const svg = d3
 const graph = svg
   .append("g")
   .attr("width", dims.width + 200)
-  .attr("transform", "translate(50,100)");
+  .attr("transform", `translate(${dims.width / 2},100)`);
 
 let moviesData = [];
 
@@ -22,10 +22,7 @@ const stratify = d3
   .id((d) => d.id)
   .parentId((d) => d.parent);
 
-const tree = d3
-  .tree()
-  .size([dims.width + 150, dims.height - 150])
-  .nodeSize([80, 500]);
+const tree = d3.tree().nodeSize([80, 500]);
 
 //update data
 const update = (data) => {
