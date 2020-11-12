@@ -22,7 +22,10 @@ const stratify = d3
   .id((d) => d.id)
   .parentId((d) => d.parent);
 
-const tree = d3.tree().size([dims.width + 150, dims.height - 150]);
+const tree = d3
+  .tree()
+  .size([dims.width + 150, dims.height - 150])
+  .nodeSize([80, 500]);
 
 //update data
 const update = (data) => {
