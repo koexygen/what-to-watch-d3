@@ -1,15 +1,19 @@
 const input = document.getElementById("movie-name");
 const form = document.querySelector("form");
 let movieImgPath = "https://image.tmdb.org/t/p/w500/";
-const dims = { width: 1400, height: 500 };
+
+const dims = { width: 1080, height: 500 };
 
 const svg = d3
   .select(".canvas")
   .append("svg")
-  .attr("width", dims.width + 100)
+  .attr("width", dims.width + 200)
   .attr("height", dims.height + 200);
 
-const graph = svg.append("g").attr("transform", "translate(50,100)");
+const graph = svg
+  .append("g")
+  .attr("width", dims.width + 200)
+  .attr("transform", "translate(50,100)");
 
 let moviesData = [];
 
@@ -79,8 +83,8 @@ input.addEventListener("input", (e) => {
         searchResult[idx].parent = searchResult[0].id;
         if (idx === 0) searchResult[idx].parent = null;
       });
-
-      update(searchResult);
+      moviesData = searchResult;
+      update(moviesData);
     });
   }, 300);
 });
