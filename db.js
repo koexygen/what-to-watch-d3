@@ -22,7 +22,8 @@ const stratify = d3
   .id((d) => d.id)
   .parentId((d) => d.parent);
 
-const tree = d3.tree().size([dims.width, dims.height]);
+const tree = d3.tree().size([dims.width + 150, dims.height - 150]);
+
 //update data
 const update = (data) => {
   const rootNode = stratify(data);
@@ -40,9 +41,9 @@ const update = (data) => {
   enterNodes
     .append("image")
     .attr("xlink:href", (d) => movieImgPath + d.data.poster_path)
-    .attr("x", -45)
+    .attr("x", -30)
     .attr("y", -95)
-    .attr("width", 90)
+    .attr("width", 60)
     .attr("height", 90);
 
   links
