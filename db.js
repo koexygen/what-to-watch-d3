@@ -1,20 +1,87 @@
-const input = document.getElementById("search-input");
-const searchBtn = document.getElementById("search-btn");
-const searchContent = document.getElementById("content");
-const movieList = document.getElementById("movie-list");
+const input = document.getElementById("movie-name");
+const form = document.querySelector("form");
+let movieImgPath = "https://image.tmdb.org/t/p/w500/";
+const dims = { width: 1100, height: 500 };
+
+const svg = d3
+  .select(".canvas")
+  .append("svg")
+  .attr("width", dims.width + 100)
+  .attr("height", dims.height + 100);
+
+const graph = svg.append("g").attr("transform", "translate(50,50)");
+
+let moviesData = [];
+
+const stratify = d3
+  .stratify()
+  .id((d) => d.id)
+  .parentId((d) => d.parent);
+
+const tree = d3.tree().size([dims.width, dims.height]);
+
+//update data
+const update = (data) => {
+  const rootNode = stratify(data);
+  const treeData = tree(rootNode);
+
+  const nodes = graph.selectAll(".node").data(treeData.descendants());
+  const links = graph.selectAll(".link").data(treeData.links());
+
+  const enterNodes = nodes
+    .enter()
+    .append("g")
+    .attr("class", "node")
+    .attr("transform", (d) => `translate(${d.x}, ${d.y})`);
+
+  enterNodes
+    .append("image")
+    .attr("xlink:href", (d) => movieImgPath + d.data.poster_path)
+    .attr("x", -8)
+    .attr("y", -8)
+    .attr("width", 64)
+    .attr("height", 64);
+
+  links
+    .enter()
+    .append("path")
+    .attr("class", "link")
+    .attr(
+      "d",
+      d3
+        .linkVertical()
+        .x((d) => d.x)
+        .y((d) => d.y)
+    );
+
+  console.log(nodes, links);
+};
 
 // Fetch Requests
-searchBtn.addEventListener("click", expand);
 const apiKey = "afc2df6ed2b105665b061dcc22c09716";
 const url = `https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&query=`;
 
-let searchResults;
-const searchMovie = (query) => {
-    //clean li
-    while (movieList.firstChild) {
-        movieList.removeChild(movieList.firstChild);
-    }
+form.addEventListener("submit", (e) => {
+  e.preventDefault();
+});
 
-    //fetch new movies
-    return fetch(url + query).then((response) => response.json());
+const searchMovie = (query) => {
+  return fetch(url + query).then((response) => response.json());
 };
+
+let requestTimer;
+input.addEventListener("input", (e) => {
+  clearTimeout(requestTimer);
+  requestTimer = setTimeout(() => {
+    searchMovie(e.target.value).then((data) => {
+      let searchResult = data.results;
+
+      searchResult.forEach((movie, idx) => {
+        searchResult[idx].parent = searchResult[0].id;
+        if (idx === 0) searchResult[idx].parent = null;
+      });
+
+      update(searchResult);
+    });
+  }, 300);
+});
