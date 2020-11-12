@@ -1,15 +1,15 @@
 const input = document.getElementById("movie-name");
 const form = document.querySelector("form");
 let movieImgPath = "https://image.tmdb.org/t/p/w500/";
-const dims = { width: 1100, height: 500 };
+const dims = { width: 1400, height: 500 };
 
 const svg = d3
   .select(".canvas")
   .append("svg")
   .attr("width", dims.width + 100)
-  .attr("height", dims.height + 100);
+  .attr("height", dims.height + 200);
 
-const graph = svg.append("g").attr("transform", "translate(50,50)");
+const graph = svg.append("g").attr("transform", "translate(50,100)");
 
 let moviesData = [];
 
@@ -19,7 +19,6 @@ const stratify = d3
   .parentId((d) => d.parent);
 
 const tree = d3.tree().size([dims.width, dims.height]);
-
 //update data
 const update = (data) => {
   const rootNode = stratify(data);
@@ -37,10 +36,10 @@ const update = (data) => {
   enterNodes
     .append("image")
     .attr("xlink:href", (d) => movieImgPath + d.data.poster_path)
-    .attr("x", -8)
-    .attr("y", -8)
-    .attr("width", 64)
-    .attr("height", 64);
+    .attr("x", -45)
+    .attr("y", -95)
+    .attr("width", 90)
+    .attr("height", 90);
 
   links
     .enter()
@@ -51,7 +50,7 @@ const update = (data) => {
       d3
         .linkVertical()
         .x((d) => d.x)
-        .y((d) => d.y)
+        .y((d) => (d.parent ? d.y - 100 : d.y))
     );
 
   console.log(nodes, links);
