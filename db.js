@@ -4,16 +4,43 @@ let movieImgPath = "https://image.tmdb.org/t/p/w500/";
 
 const dims = { width: window.innerWidth, height: 500 };
 
+
+
 const svg = d3
   .select(".canvas")
   .append("svg")
   .attr("width", dims.width + 200)
-  .attr("height", dims.height + 200);
+  .attr("height", dims.height + 200)
+    .call(d3.zoom()
+        .extent([[0, 0], [dims.width, dims.height]])
+        .scaleExtent([1, 8])
+        .on("zoom", zoomed));
 
 const graph = svg
   .append("g")
   .attr("width", dims.width + 200)
-  .attr("transform", `translate(${dims.width / 2},100)`);
+  .attr("transform", `translate(${dims.width / 2},100)`)
+    .call(d3.drag()
+        .on("start", dragstarted)
+        .on("drag", dragged)
+        .on("end", dragended));
+
+function dragstarted() {
+  d3.select(this).raise();
+  graph.attr("cursor", "grabbing");
+}
+
+function dragged(event, d) {
+  d3.select(this).attr("x", d.x = event.x).attr("y", d.y = event.y);
+}
+
+function dragended() {
+  graph.attr("cursor", "grab");
+}
+
+function zoomed({transform}) {
+  graph.attr("transform", transform + `translate(${dims.width / 2},100)`);
+}
 
 let moviesData = [];
 
@@ -23,6 +50,7 @@ const stratify = d3
   .parentId((d) => d.parent);
 
 const tree = d3.tree().nodeSize([85, 500]);
+
 
 //update data
 const update = (data) => {
