@@ -28,7 +28,7 @@ const graph = svg
     d3.drag().on("start", dragStart).on("drag", grabbed).on("end", dragEnd)
   );
 
-function dragStart(event, d) {
+function dragStart() {
   // debugger;
   // console.log(event.x, event.y, d.d, d.y);
   d3.select(this).raise();
@@ -41,7 +41,7 @@ function grabbed(event, d) {
 
   //update nodes
   d3.select(this)
-    .attr("transform", (d) => `translate(${event.x}, ${event.y})`)
+    .attr("transform", `translate(${event.x}, ${event.y})`)
     .attr("x", (d.x = event.x))
     .attr("y", (d.y = event.y));
 
