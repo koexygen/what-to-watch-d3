@@ -36,9 +36,6 @@ function dragStart() {
 }
 
 function grabbed(event, d) {
-  // debugger;
-  console.log(event.dx, event.dy, event.x, event.y, d.x, d.y);
-
   //update nodes
   d3.select(this)
     .attr("transform", `translate(${event.x}, ${event.y})`)
@@ -109,7 +106,6 @@ const update = (data) => {
         .y((d) => (d.parent ? d.y - 100 : d.y))
     );
 
-  console.log(nodes, links);
 };
 
 // Fetch Requests
