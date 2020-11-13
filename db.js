@@ -4,41 +4,62 @@ let movieImgPath = "https://image.tmdb.org/t/p/w500/";
 
 const dims = { width: window.innerWidth, height: 500 };
 
-
-
 const svg = d3
   .select(".canvas")
   .append("svg")
   .attr("width", dims.width + 200)
   .attr("height", dims.height + 200)
-    .call(d3.zoom()
-        .extent([[0, 0], [dims.width, dims.height]])
-        .scaleExtent([1, 8])
-        .on("zoom", zoomed));
+  .call(
+    d3
+      .zoom()
+      .extent([
+        [0, 0],
+        [dims.width, dims.height],
+      ])
+      .scaleExtent([-1, 8])
+      .on("zoom", zoomed)
+  );
 
 const graph = svg
   .append("g")
   .attr("width", dims.width + 200)
   .attr("transform", `translate(${dims.width / 2},100)`)
-    .call(d3.drag()
-        .on("start", dragstarted)
-        .on("drag", dragged)
-        .on("end", dragended));
+  .call(
+    d3.drag().on("start", dragStart).on("drag", grabbed).on("end", dragEnd)
+  );
 
-function dragstarted() {
+function dragStart(event, d) {
+  // debugger;
+  // console.log(event.x, event.y, d.d, d.y);
   d3.select(this).raise();
   graph.attr("cursor", "grabbing");
 }
 
-function dragged(event, d) {
-  d3.select(this).attr("x", d.x = event.x).attr("y", d.y = event.y);
+function grabbed(event, d) {
+  // debugger;
+  console.log(event.dx, event.dy, event.x, event.y, d.x, d.y);
+
+  //update nodes
+  d3.select(this)
+    .attr("transform", (d) => `translate(${event.x}, ${event.y})`)
+    .attr("x", (d.x = event.x))
+    .attr("y", (d.y = event.y));
+
+  //  update links
+  d3.selectAll(".link").attr(
+    "d",
+    d3
+      .linkVertical()
+      .x((d) => d.x)
+      .y((d) => (d.parent ? d.y - 100 : d.y))
+  );
 }
 
-function dragended() {
+function dragEnd() {
   graph.attr("cursor", "grab");
 }
 
-function zoomed({transform}) {
+function zoomed({ transform }) {
   graph.attr("transform", transform + `translate(${dims.width / 2},100)`);
 }
 
@@ -50,7 +71,6 @@ const stratify = d3
   .parentId((d) => d.parent);
 
 const tree = d3.tree().nodeSize([85, 500]);
-
 
 //update data
 const update = (data) => {
@@ -64,7 +84,10 @@ const update = (data) => {
     .enter()
     .append("g")
     .attr("class", "node")
-    .attr("transform", (d) => `translate(${d.x}, ${d.y})`);
+    .attr("transform", (d) => `translate(${d.x}, ${d.y})`)
+    .call(
+      d3.drag().on("start", dragStart).on("drag", grabbed).on("end", dragEnd)
+    );
 
   enterNodes
     .append("image")
