@@ -108,7 +108,10 @@ const update = (data) => {
     .attr("x", -42.5)
     .attr("y", -95)
     .attr("width", 85)
-    .attr("height", 125);
+    .attr("height", 125)
+    .on("mouseover", (e, d) => {
+      d3.select(".movie_card").style("display", "block");
+    });
 
   links
     .enter()
@@ -152,3 +155,7 @@ input.addEventListener("input", (e) => {
     });
   }, 300);
 });
+
+const handleHover = (e, d) => {};
+
+//movie card
