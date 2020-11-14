@@ -77,8 +77,15 @@ const update = (data) => {
     .data(data, (d) => d)
     .exit()
     .remove();
-
+  //clean parent
   graph.select(".node").remove();
+
+  //clean links
+  graph
+    .selectAll(".link")
+    .data(data, (d) => d.id)
+    .exit()
+    .remove();
 
   let rootNode = stratify(data);
   let treeData = tree(rootNode);
