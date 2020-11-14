@@ -2,7 +2,7 @@ const input = document.getElementById("movie-name");
 const form = document.querySelector("form");
 let movieImgPath = "https://image.tmdb.org/t/p/w500/";
 
-const dims = { width: window.innerWidth, height: 500 };
+const dims = { width: window.innerWidth, height: 800 };
 
 const svg = d3
   .select(".canvas")
@@ -71,11 +71,20 @@ const tree = d3.tree().nodeSize([85, 500]);
 
 //update data
 const update = (data) => {
-  const rootNode = stratify(data);
-  const treeData = tree(rootNode);
+  //clean nodes
+  let oldNodes = graph
+    .selectAll(".node")
+    .data(data, (d) => d)
+    .exit()
+    .remove();
 
-  const nodes = graph.selectAll(".node").data(treeData.descendants());
-  const links = graph.selectAll(".link").data(treeData.links());
+  graph.select(".node").remove();
+
+  let rootNode = stratify(data);
+  let treeData = tree(rootNode);
+
+  let nodes = graph.selectAll(".node").data(treeData.descendants());
+  let links = graph.selectAll(".link").data(treeData.links());
 
   const enterNodes = nodes
     .enter()
@@ -105,7 +114,6 @@ const update = (data) => {
         .x((d) => d.x)
         .y((d) => (d.parent ? d.y - 100 : d.y))
     );
-
 };
 
 // Fetch Requests
@@ -129,8 +137,9 @@ input.addEventListener("input", (e) => {
 
       searchResult.forEach((movie, idx) => {
         searchResult[idx].parent = searchResult[0].id;
-        if (idx === 0) searchResult[idx].parent = null;
+        // if (idx === 0) searchResult[idx].parent = null;
       });
+      searchResult[0].parent = null;
       moviesData = searchResult;
       update(moviesData);
     });
