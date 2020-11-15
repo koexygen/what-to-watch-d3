@@ -218,7 +218,7 @@ const handleHover = (e, d) => {
             class="locandina movie-avatar"
             src=${movieImgPath + poster}
           />
-          <h1 class="movie-title">${title} <span style="font-family: cursive;font-weight: lighter;">- ${tagLine}</span></h1>
+          <h1 class="movie-title">${title} <span style="font-family: cursive;font-weight: lighter;">${tagLine}</span></h1>
           
 
           <div class="flex-info">
@@ -307,7 +307,7 @@ const handleHover = (e, d) => {
             class="locandina movie-avatar"
             src=${movieImgPath + poster}
           />
-          <h1 class="movie-title">${title} <span style="font-family: cursive;font-weight: lighter;">- ${tagLine}</span></h1>
+          <h1 class="movie-title">${title} <span style="font-family: cursive;font-weight: lighter;"> ${tagLine}</span></h1>
           
 
           <div class="flex-info">
