@@ -182,24 +182,62 @@ const handleHover = (e, d) => {
     const prodCompanies = movie.production_companies;
     const prodCountries = movie.production_countries;
 
-    const card = d3.select(".movie_card");
-    card.select(".movie-title").text(title);
-    card.select(".imdb-rating").append("span").text(imdbRating);
-    card.select(".movie-avatar").attr("src", movieImgPath + poster);
-    card.select(".movie-backdrop").attr("src", movieBackdropPath + backdrop);
-    card.select(".year-director").text(`${releaseDate}`);
-    card.select(".genres").text(`${genres.map((genre) => ` ${genre.name}`)}`);
-    card.select(".text-description").text(description);
-    card.select(".minutes").text(minutes);
-    card.select(".extra-info").append("span").text(`Budget: $${budget}`);
-    card.select(".extra-info").append("span").text(`Revenue: $${revenue}`);
-    card
-      .select(".extra-info")
-      .append("span")
-      .text(`Companies: ${prodCompanies.map((comp) => ` ${comp.name}`)}`);
-    card
-      .select(".extra-info")
-      .append("span")
-      .text(`Countries: ${prodCountries.map((country) => ` ${country.name}`)}`);
+    const card = d3.select(".movie_card").html(`<div class="info_section">
+        <div class="movie_header">
+          <img
+            class="locandina movie-avatar"
+            src=${movieImgPath + poster}
+          />
+          <h1 class="movie-title">${title}</h1>
+
+          <div class="flex-info">
+            <p class="imdb-rating">
+              <a
+                href="https://commons.wikimedia.org/wiki/File:IMDB_Logo_2016.svg"
+                ><img
+                  alt="IMDB Logo"
+                  class="imdbIcon"
+                  src="https://icons.iconarchive.com/icons/uiconstock/socialmedia/256/IMDb-icon.png"
+              /></a>
+            </p>
+            <h4 class="year-director">${releaseDate}</h4>
+            <span class="minutes">${minutes} min</span>
+            <p class="type genres">${genres.map(
+              (genre) => ` ${genre.name}`
+            )}</p>
+          </div>
+
+          <div class="extra-info">
+            <span>Budget: $${budget}</span>
+            <span>Revenue: $${revenue}</span>
+            <span>Companies: ${prodCompanies.map(
+              (comp) => ` ${comp.name}`
+            )}</span>
+            <span>
+                Countries: ${prodCountries.map((country) => ` ${country.name}`)}
+            </span>
+          </div>
+        </div>
+
+        <div class="movie_desc">
+          <p class="text-description">
+            ${description}
+          </p>
+        </div>
+        <div class="movie_social">
+          <ul>
+            <li class="movie-website">Movie Website</li>
+            <li><i class="material-icons"></i></li>
+            <li><i class="material-icons">chat_bubble</i></li>
+          </ul>
+        </div>
+      </div>
+      <div class="img-container blur_back bright_back">
+        <img
+          class="movie-backdrop"
+          src=${movieBackdropPath + backdrop}
+          alt=""
+        />
+      </div>`);
   });
 };
