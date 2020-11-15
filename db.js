@@ -192,5 +192,9 @@ const handleHover = (e, d) => {
     card.select(".minutes").text(minutes);
     card.select(".extra-info").append("span").text(`Budget: $${budget}`);
     card.select(".extra-info").append("span").text(`Revenue: $${revenue}`);
+    card
+      .select(".extra-info")
+      .append("span")
+      .text(`Companies: ${prodCompanies.map((comp) => `${comp.name} `)}`);
   });
 };
