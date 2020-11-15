@@ -176,11 +176,15 @@ const handleHover = (e, d) => {
     const releaseDate = d.data.release_date;
     const minutes = movie.runtime;
     const imdbRating = movie.vote_average;
+    const voteCount = movie.vote_count;
     const budget = movie.budget;
     const revenue = movie.revenue;
     const prodCompanies = movie.production_companies;
     const prodCountries = movie.production_countries;
     const webPage = movie.homepage;
+    const status = movie.status;
+    const tagLine = movie.tagline;
+    const languages = movie.spoken_languages;
 
     const card = d3.select(".movie_card").html(`<div class="info_section">
         <div class="movie_header">
@@ -188,7 +192,8 @@ const handleHover = (e, d) => {
             class="locandina movie-avatar"
             src=${movieImgPath + poster}
           />
-          <h1 class="movie-title">${title}</h1>
+          <h1 class="movie-title">${title} - <span style="font-family: cursive;font-weight: lighter;">${tagLine}</span></h1>
+          
 
           <div class="flex-info">
             <p class="imdb-rating">
@@ -199,7 +204,7 @@ const handleHover = (e, d) => {
                   class="imdbIcon"
                   src="https://icons.iconarchive.com/icons/uiconstock/socialmedia/256/IMDb-icon.png"
               /></a>
-              <span>${imdbRating}</span>
+              <span>${imdbRating} From ${voteCount}</span>
             </p>
             <h4 class="year-director">${releaseDate}</h4>
             <span class="minutes">${minutes} min</span>
@@ -216,6 +221,9 @@ const handleHover = (e, d) => {
             )}</span>
             <span>
                 Countries: ${prodCountries.map((country) => ` ${country.name}`)}
+            </span>            
+            <span>
+                Languages: ${languages.map((language) => ` ${language.name}`)}
             </span>
           </div>
         </div>
@@ -228,7 +236,9 @@ const handleHover = (e, d) => {
         <div class="movie_social">
           <ul>
             <li class="movie-website">Website: ${webPage}</li>
-            <li><i class="material-icons"></i></li>
+            <li style="color: ${
+              status === "Released" ? "green" : "red"
+            }">${status}</li>
             <li><i class="material-icons">chat_bubble</i></li>
           </ul>
         </div>
