@@ -1,6 +1,7 @@
 const input = document.getElementById("movie-name");
 const form = document.querySelector("form");
 let movieImgPath = "https://image.tmdb.org/t/p/w500/";
+let movieBackdropPath = "https://image.tmdb.org/t/p/original/";
 
 const dims = { width: window.innerWidth, height: 800 };
 
@@ -111,9 +112,10 @@ const update = (data) => {
     .attr("height", 125)
     .on("mouseover", (e, d) => {
       d3.select(".movie_card").style("display", "block");
+      handleHover(e, d);
     })
     .on("mouseout", (e, d) => {
-      d3.select(".movie_card").style("display", "none");
+      // d3.select(".movie_card").style("display", "none");
     });
 
   links
@@ -132,6 +134,12 @@ const update = (data) => {
 // Fetch Requests
 const apiKey = "afc2df6ed2b105665b061dcc22c09716";
 const url = `https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&query=`;
+
+const getMovieDetails = (movieId) => {
+  return fetch(
+    `https://api.themoviedb.org/3/movie/${movieId}?api_key=${apiKey}&language=en-US`
+  ).then((r) => r.json());
+};
 
 form.addEventListener("submit", (e) => {
   e.preventDefault();
@@ -159,4 +167,30 @@ input.addEventListener("input", (e) => {
   }, 300);
 });
 
-const handleHover = (e, d) => {};
+const handleHover = (e, d) => {
+  getMovieDetails(d.id).then((movie) => {
+    let title = d.data.title;
+    let backdrop = d.data.backdrop_path;
+    let poster = d.data.poster_path;
+    let genres = movie.genres;
+    let description = d.data.overview;
+    let releaseDate = d.data.release_date;
+    let minutes = movie.runtime;
+    let imdbRating = movie.vote_average;
+    let budget = movie.budget;
+    let revenue = movie.revenue;
+    let prodCompanies = movie.production_companies;
+
+    let card = d3.select(".movie_card");
+    card.select(".movie-title").text(title);
+    card.select(".imdb-rating").append("span").text(imdbRating);
+    card.select(".movie-avatar").attr("src", movieImgPath + poster);
+    card.select(".movie-backdrop").attr("src", movieBackdropPath + backdrop);
+    card.select(".year-director").text(`${releaseDate}`);
+    card.select(".genres").text(`${genres.map((genre) => ` ${genre.name}`)}`);
+    card.select(".text-description").text(description);
+    card.select(".minutes").text(minutes);
+    card.select(".extra-info").append("span").text(`Budget: $${budget}`);
+    card.select(".extra-info").append("span").text(`Revenue: $${revenue}`);
+  });
+};

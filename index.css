@@ -21,6 +21,10 @@ h2 {
     margin: 0;
 }
 
+h4 {
+    margin: 0;
+}
+
 .link {
     fill: none;
     stroke: #bbb;
@@ -69,6 +73,7 @@ html {
 .movie_card .info_section .movie_header h1 {
     color: #fff;
     font-weight: 400;
+    margin: 0;
 }
 .movie_card .info_section .movie_header h4 {
     color: #9ac7fa;
@@ -76,7 +81,6 @@ html {
 }
 .movie_card .info_section .movie_header .minutes {
     display: inline-block;
-    margin-top: 10px;
     color: #fff;
     padding: 5px;
     border-radius: 5px;
@@ -91,14 +95,14 @@ html {
     position: relative;
     float: left;
     margin-right: 20px;
-    height: 120px;
+    height: 205px;
     box-shadow: 0 0 20px -10px rgba(0, 0, 0, 0.5);
 }
 .movie_card .info_section .movie_desc {
     padding: 25px;
     height: 40%;
 }
-.movie_card .info_section .movie_desc .text {
+.movie_card .info_section .movie_desc .text-description {
     color: #cfd6e1;
 }
 .movie_card .info_section .movie_social {
@@ -140,7 +144,7 @@ html {
 
 @media screen and (min-width: 768px) {
     .movie_header {
-        width: 60%;
+        width: 100%;
     }
 
     .movie_desc {
@@ -204,29 +208,48 @@ html {
     box-shadow: 0px 0px 120px -55px rgba(255, 51, 0, 0.5);
 }
 
-.bright_back {
-    background: url("https://occ-0-2433-448.1.nflxso.net/art/cd5c9/3e192edf2027c536e25bb5d3b6ac93ced77cd5c9.jpg");
+.flex-info {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
 }
 
-#tomb {
-    box-shadow: 0px 0px 150px -45px rgba(19, 160, 134, 0.6);
-}
-#tomb:hover {
-    box-shadow: 0px 0px 120px -55px rgba(19, 160, 134, 0.6);
+.flex-info > * {
+    margin-right: 10px;
 }
 
-.tomb_back {
-    background: url("https://fsmedia.imgix.net/cd/c9/5e/ba/4817/4d9a/93f0/c776ec32ecbc/lara-crofts-neck-looks-unnatural-in-the-new-poster-for-tomb-raider.png");
+.bright_back > img {
+    width: 100%;
+    /* height: 100%; */
+    object-fit: contain;
 }
 
-#ave {
-    box-shadow: 0px 0px 150px -45px rgba(199, 147, 75, 0.7);
-    margin-bottom: 200px;
-}
-#ave:hover {
-    box-shadow: 0px 0px 120px -55px rgba(199, 147, 75, 0.7);
+.imdb-rating {
+    color: white;
+    font-size: 2.28rem;
+    line-height: 110%;
+    margin: 1.52rem 0 .912rem 0;
+    display: flex;
+    align-items: center;
 }
 
-.ave_back {
-    background: url("https://www.gannett-cdn.com/-mm-/c03fd140debe8ad4c05cf81a5cad7ad61a12ce52/c=0-1580-2985-3266&r=x803&c=1600x800/local/-/media/2017/06/09/USATODAY/USATODAY/636326272873599176-Black-Panther-Teaser.jpg");
+.imdb-rating > span {
+    margin-right: 15px;
+    padding-bottom: 6px;
 }
+.imdbIcon {
+    height: 64px;
+}
+
+.extra-info {
+    display: flex;
+    color: white;
+}
+
+.extra-info > span {
+    margin-right: 5px;
+}
+
+/*.bright_back {*/
+/*    background: url("https://occ-0-2433-448.1.nflxso.net/art/cd5c9/3e192edf2027c536e25bb5d3b6ac93ced77cd5c9.jpg");*/
+/*}*/
