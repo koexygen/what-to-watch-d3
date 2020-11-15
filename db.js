@@ -24,7 +24,7 @@ const svg = d3
 const graph = svg
   .append("g")
   .attr("width", dims.width + 200)
-  .attr("transform", `translate(${dims.width / 2},100)`)
+  .attr("transform", `translate(${dims.width / 2},10)`)
   .call(
     d3.drag().on("start", dragStart).on("drag", grabbed).on("end", dragEnd)
   );
@@ -48,8 +48,8 @@ function grabbed(event, d) {
     "d",
     d3
       .linkVertical()
-      .x((d) => d.x)
-      .y((d) => (d.parent ? d.y - 100 : d.y))
+      .x((d) => d.x + dims.width / 44)
+      .y((d) => (d.parent === null ? d.y + dims.width / (22 * 0.65) : d.y))
   );
 }
 
@@ -68,7 +68,7 @@ const stratify = d3
   .id((d) => d.id)
   .parentId((d) => d.parent);
 
-const tree = d3.tree().nodeSize([85, 400]);
+const tree = d3.tree().nodeSize([dims.width / 21, dims.height / 1.3]);
 
 //update data
 const update = (data) => {
@@ -106,10 +106,9 @@ const update = (data) => {
   enterNodes
     .append("image")
     .attr("xlink:href", (d) => movieImgPath + d.data.poster_path)
-    .attr("x", -42.5)
-    .attr("y", -95)
-    .attr("width", 85)
-    .attr("height", 125)
+    .attr("width", dims.width / 22)
+    .attr("height", dims.width / (22 * 0.65))
+    // .attr("transform", (d) => `translate(${dims.width / 22 / 2}, ${0})`)
     .on("mouseover", (e, d) => {
       d3.select(".movie_card").style("display", "block");
       handleHover(e, d);
@@ -126,8 +125,8 @@ const update = (data) => {
       "d",
       d3
         .linkVertical()
-        .x((d) => d.x)
-        .y((d) => (d.parent ? d.y - 100 : d.y))
+        .x((d) => d.x + dims.width / 44)
+        .y((d) => (d.parent === null ? d.y + dims.width / (22 * 0.65) : d.y))
     );
 };
 
