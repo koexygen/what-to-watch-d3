@@ -115,7 +115,7 @@ const update = (data) => {
       handleHover(e, d);
     })
     .on("mouseout", (e, d) => {
-      // d3.select(".movie_card").style("display", "none");
+      d3.select(".movie_card").style("display", "none");
     });
 
   links
@@ -169,19 +169,20 @@ input.addEventListener("input", (e) => {
 
 const handleHover = (e, d) => {
   getMovieDetails(d.id).then((movie) => {
-    let title = d.data.title;
-    let backdrop = d.data.backdrop_path;
-    let poster = d.data.poster_path;
-    let genres = movie.genres;
-    let description = d.data.overview;
-    let releaseDate = d.data.release_date;
-    let minutes = movie.runtime;
-    let imdbRating = movie.vote_average;
-    let budget = movie.budget;
-    let revenue = movie.revenue;
-    let prodCompanies = movie.production_companies;
+    const title = d.data.title;
+    const backdrop = d.data.backdrop_path;
+    const poster = d.data.poster_path;
+    const genres = movie.genres;
+    const description = d.data.overview;
+    const releaseDate = d.data.release_date;
+    const minutes = movie.runtime;
+    const imdbRating = movie.vote_average;
+    const budget = movie.budget;
+    const revenue = movie.revenue;
+    const prodCompanies = movie.production_companies;
+    const prodCountries = movie.production_countries;
 
-    let card = d3.select(".movie_card");
+    const card = d3.select(".movie_card");
     card.select(".movie-title").text(title);
     card.select(".imdb-rating").append("span").text(imdbRating);
     card.select(".movie-avatar").attr("src", movieImgPath + poster);
@@ -195,6 +196,10 @@ const handleHover = (e, d) => {
     card
       .select(".extra-info")
       .append("span")
-      .text(`Companies: ${prodCompanies.map((comp) => `${comp.name} `)}`);
+      .text(`Companies: ${prodCompanies.map((comp) => ` ${comp.name}`)}`);
+    card
+      .select(".extra-info")
+      .append("span")
+      .text(`Countries: ${prodCountries.map((country) => ` ${country.name}`)}`);
   });
 };
