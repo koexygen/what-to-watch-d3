@@ -111,6 +111,9 @@ const update = (data) => {
     .attr("height", 125)
     .on("mouseover", (e, d) => {
       d3.select(".movie_card").style("display", "block");
+    })
+    .on("mouseout", (e, d) => {
+      d3.select(".movie_card").style("display", "none");
     });
 
   links
@@ -157,5 +160,3 @@ input.addEventListener("input", (e) => {
 });
 
 const handleHover = (e, d) => {};
-
-//movie card
