@@ -1,3 +1,11 @@
+header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5%;
+
+}
+
 .canvas {
     display: flex;
     justify-content: center;
@@ -34,7 +42,7 @@ svg,
 body,
 html {
     width: 100vw;
-    height: 87vh;
+    height: 55vh;
 }
 
 .movie_card {
@@ -45,7 +53,7 @@ html {
     bottom: 10px;
     margin: 0 auto;
     width: 90%;
-    height: 500px;
+    height: 30%;
     overflow: hidden;
     border-radius: 10px;
     -webkit-transition: all 0.4s;
@@ -67,10 +75,11 @@ html {
 }
 .movie_card .info_section .movie_header {
     position: relative;
-    padding: 25px;
+    padding: 0.5%;
     height: 45%;
 }
 .movie_card .info_section .movie_header h1 {
+    font-size: 1.8rem;
     color: #fff;
     font-weight: 400;
     margin: 0;
@@ -99,8 +108,9 @@ html {
     box-shadow: 0 0 20px -10px rgba(0, 0, 0, 0.5);
 }
 .movie_card .info_section .movie_desc {
-    padding: 25px;
+    padding: 3%;
     height: 40%;
+    width: 100%;
 }
 .movie_card .info_section .movie_desc .text-description {
     color: #cfd6e1;
@@ -212,7 +222,7 @@ html {
     display: flex;
     justify-content: flex-start;
     align-items: center;
-    height: 75px;
+    height: 40%;
 }
 
 .flex-info > * {

@@ -3,7 +3,7 @@ const form = document.querySelector("form");
 let movieImgPath = "https://image.tmdb.org/t/p/w500/";
 let movieBackdropPath = "https://image.tmdb.org/t/p/original/";
 
-const dims = { width: window.innerWidth, height: 800 };
+const dims = { width: window.innerWidth, height: window.innerHeight / 2 };
 
 const svg = d3
   .select(".canvas")
@@ -68,7 +68,7 @@ const stratify = d3
   .id((d) => d.id)
   .parentId((d) => d.parent);
 
-const tree = d3.tree().nodeSize([85, 500]);
+const tree = d3.tree().nodeSize([85, 400]);
 
 //update data
 const update = (data) => {
