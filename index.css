@@ -43,6 +43,7 @@ body,
 html {
     width: 100vw;
     height: 55vh;
+    font-family: sans-serif;
 }
 
 .movie_card {
