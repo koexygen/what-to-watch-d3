@@ -213,11 +213,9 @@ html {
     }
 }
 #bright {
-    box-shadow: 0px 0px 150px -45px rgba(255, 51, 0, 0.5);
+    box-shadow: 0px 0px 5px 2px #0d0d0c;
 }
-#bright:hover {
-    box-shadow: 0px 0px 120px -55px rgba(255, 51, 0, 0.5);
-}
+
 
 .flex-info {
     display: flex;
@@ -271,6 +269,9 @@ html {
     top: 0;
 }
 
+.watermark {
+    color: red;
+}
 /*.bright_back {*/
 /*    background: url("https://occ-0-2433-448.1.nflxso.net/art/cd5c9/3e192edf2027c536e25bb5d3b6ac93ced77cd5c9.jpg");*/
 /*}*/

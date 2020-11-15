@@ -132,11 +132,17 @@ const update = (data) => {
 
 // Fetch Requests
 const apiKey = "afc2df6ed2b105665b061dcc22c09716";
+const multiUrl = `https://api.themoviedb.org/3/search/multi?api_key=${apiKey}&language=en-US&query=`;
 const url = `https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&query=`;
 
 const getMovieDetails = (movieId) => {
   return fetch(
     `https://api.themoviedb.org/3/movie/${movieId}?api_key=${apiKey}&language=en-US`
+  ).then((r) => r.json());
+};
+const getTvDetails = (tvId) => {
+  return fetch(
+    `https://api.themoviedb.org/3/tv/${tvId}?api_key=${apiKey}&language=en-US`
   ).then((r) => r.json());
 };
 
@@ -145,7 +151,7 @@ form.addEventListener("submit", (e) => {
 });
 
 const searchMovie = (query) => {
-  return fetch(url + query).then((response) => response.json());
+  return fetch(multiUrl + query).then((response) => response.json());
 };
 
 let requestTimer;
@@ -167,32 +173,54 @@ input.addEventListener("input", (e) => {
 });
 
 const handleHover = (e, d) => {
-  getMovieDetails(d.id).then((movie) => {
-    const title = d.data.title;
-    const backdrop = d.data.backdrop_path;
-    const poster = d.data.poster_path;
-    const genres = movie.genres;
-    const description = d.data.overview;
-    const releaseDate = d.data.release_date;
-    const minutes = movie.runtime;
-    const imdbRating = movie.vote_average;
-    const voteCount = movie.vote_count;
-    const budget = movie.budget;
-    const revenue = movie.revenue;
-    const prodCompanies = movie.production_companies;
-    const prodCountries = movie.production_countries;
-    const webPage = movie.homepage;
-    const status = movie.status;
-    const tagLine = movie.tagline;
-    const languages = movie.spoken_languages;
+  let title;
+  let backdrop;
+  let poster;
+  let genres;
+  let description;
+  let releaseDate;
+  let minutes;
+  let imdbRating;
+  let voteCount;
+  let budget;
+  let revenue;
+  let prodCompanies;
+  let prodCountries;
+  let webPage;
+  let status;
+  let tagLine;
+  let languages;
 
-    const card = d3.select(".movie_card").html(`<div class="info_section">
+  // debugger;
+  if (d.data.media_type === "movie") {
+    getMovieDetails(d.id).then((movie) => {
+      title = d.data.title;
+      backdrop = d.data.backdrop_path;
+      poster = d.data.poster_path;
+      genres = movie.genres;
+      description = d.data.overview;
+      releaseDate = d.data.release_date;
+      minutes = movie.runtime;
+      imdbRating = movie.vote_average;
+      voteCount = movie.vote_count;
+      budget = movie.budget;
+      revenue = movie.revenue;
+      prodCompanies = movie.production_companies;
+      prodCountries = movie.production_countries;
+      webPage = movie.homepage;
+      status = movie.status;
+      tagLine = movie.tagline;
+      languages = movie.spoken_languages;
+
+      const card = d3.select(".movie_card").html(`<div class="info_section">
         <div class="movie_header">
           <img
             class="locandina movie-avatar"
             src=${movieImgPath + poster}
           />
-          <h1 class="movie-title">${title} - <span style="font-family: cursive;font-weight: lighter;">${tagLine}</span></h1>
+          <h1 class="movie-title">${
+            d.data.media_type
+          } - ${title} <span style="font-family: cursive;font-weight: lighter;">- ${tagLine}</span></h1>
           
 
           <div class="flex-info">
@@ -239,7 +267,7 @@ const handleHover = (e, d) => {
             <li style="color: ${
               status === "Released" ? "green" : "red"
             }">${status}</li>
-            <li><i class="material-icons">chat_bubble</i></li>
+            <li><a href="https://www.linkedin.com/in/gio-chomakhashvili-a739911b9/" class="watermark">Author Gio Chomakhashvili</a></li>
           </ul>
         </div>
       </div>
@@ -250,5 +278,97 @@ const handleHover = (e, d) => {
           alt=""
         />
       </div>`);
-  });
+    });
+  } else {
+    getTvDetails(d.id).then((movie) => {
+      title = d.data.name;
+      backdrop = d.data.backdrop_path;
+      poster = d.data.poster_path;
+      genres = movie.genres;
+      description = d.data.overview;
+      releaseDate = d.data.first_air_date;
+      minutes = movie.episode_run_time;
+      imdbRating = movie.vote_average;
+      voteCount = movie.vote_count;
+      let createdBy = movie.created_by;
+      prodCompanies = movie.production_companies;
+      let seasons = movie.seasons;
+      let totalEpisodes = movie.number_of_episodes;
+      let totalSeasons = movie.number_of_seasons;
+      let lastEpisodeAir = movie.last_air_date;
+      let lastEpisodeName = movie.last_episode_to_air.name;
+      status = movie.status;
+      tagLine = movie.tagline;
+      languages = movie.spoken_languages;
+
+      console.log(movie);
+
+      const card = d3.select(".movie_card").html(`<div class="info_section">
+        <div class="movie_header">
+          <img
+            class="locandina movie-avatar"
+            src=${movieImgPath + poster}
+          />
+          <h1 class="movie-title">${
+            d.data.media_type
+          } - ${title} <span style="font-family: cursive;font-weight: lighter;">- ${tagLine}</span></h1>
+          
+
+          <div class="flex-info">
+            <p class="imdb-rating">
+              <a
+                href="https://commons.wikimedia.org/wiki/File:IMDB_Logo_2016.svg"
+                ><img
+                  alt="IMDB Logo"
+                  class="imdbIcon"
+                  src="https://icons.iconarchive.com/icons/uiconstock/socialmedia/256/IMDb-icon.png"
+              /></a>
+              <span>${imdbRating} From ${voteCount}</span>
+            </p>
+            <h4 class="year-director">${releaseDate}</h4>
+            <span class="minutes">${minutes[0]} min</span>
+            <p class="type genres">${genres.map(
+              (genre) => ` ${genre.name}`
+            )}</p>
+          </div>
+
+          <div class="extra-info">
+            <span>Created By: ${createdBy.map((guy) => ` ${guy.name}`)}</span>
+            <span>Last Episode Info - Release Date: ${lastEpisodeAir}, Name: ${lastEpisodeName}</span>
+            <span>Companies: ${prodCompanies.map(
+              (comp) => ` ${comp.name}`
+            )}</span>
+            <span>
+                Seasons: ${seasons.map((season) => ` ${season.name}`)}
+            </span>            
+            <span>
+                Num of Episodes: ${totalEpisodes}, Num of Seasons: ${totalSeasons}
+            </span>
+          </div>
+        </div>
+
+        <div class="movie_desc">
+          <p class="text-description">
+            ${description}
+          </p>
+        </div>
+        <div class="movie_social">
+          <ul>
+            <li class="movie-website">Website: ${webPage}</li>
+            <li style="color: ${
+              status === "Released" ? "green" : "red"
+            }">${status}</li>
+            <li><a href="https://www.linkedin.com/in/gio-chomakhashvili-a739911b9/" class="watermark">Author Gio Chomakhashvili</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="img-container blur_back bright_back">
+        <img
+          class="movie-backdrop"
+          src=${movieBackdropPath + backdrop}
+          alt=""
+        />
+      </div>`);
+    });
+  }
 };
